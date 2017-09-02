@@ -1,3 +1,81 @@
 Index
 
-<%= link_to "Download CSV",  export_csv_path, class: "btn btn-primary btn-xs" %>
+<%= link_to "Download CSV",  export_csv_file_path, class: "btn btn-primary btn-xs" %>
+
+<% if !@jobs.blank? %>
+	<section class="content">
+	<% @jobs.each do |job| %>
+	  <div class="tab-content row">
+	    <div class="col-lg-12" id="printers">
+	      <div class="box">
+	        <div class="box-body">
+	          <div class="table-responsive" style="border: none">
+	            <div id="example2_wrapper" class="dataTables_wrapper form-inline" role="grid">
+		            <p><%=job.id%></p>
+					<p><%=job.title%></p>
+					<p id="job_<%=job.id%>_status"><%=job.status%></p>
+					<br>
+					<%# if job.status == JobTracker::PROCESSING %>
+						<div class="col-md-12" id="job_<%= job.id %>_progress_bar">
+						  <br>
+						  <div class="export">
+						    <%#= link_to 'Export Products', download_csv_path(depot_id: Depot.current), remote: true, class: 'btn btn-primary btn-lg' %>
+						    <div class="well">
+						      <div class="row">
+						        <div class="col-xs-12">
+						          <div class="progress-status text-primary" id="job_<%=job.id%>_progress">
+						            0/0
+						          </div>
+						        </div>
+						      </div>
+						      <div class="row">
+						        <div class="col-xs-12">
+						          <div class="gress progress-striped active">
+						            <div class="progress-bar" id="job_<%=job.id%>_bar">
+						              <div class="text-primary">
+						                0%
+						              </div>
+						            </div>
+						          </div>
+						        </div>
+						      </div>
+						    </div>
+						    <%# link_to 'View csv', '/export.csv', class: 'btn btn-success export-link', style: 'display:none' %>
+						  </div>
+						</div>  
+						<script>
+						  // $(document).ready(function(){
+						  	show_loader_flag = false;
+						    progress_job({id: <%= job.id %>, status: "<%= job.status %>"});
+						  // });
+					  	</script>
+					<%#end %>
+					<div id="job_<%=job.id%>_redirect_link" class="side-by-side-buttons">
+						<% if job.status != JobTracker::PROCESSING %>
+							<% if (job.status == JobTracker::FAILURE || job.status == JobTracker::ERROR) %>
+								<p style="color: red;"><%= job.last_error %></p>
+								<% css = "btn btn-danger btn-xs" %>
+							<% else %>
+								<% css = "btn btn-primary btn-xs" %>
+							<% end %>
+							<% if !job.redirect_link.blank? %>
+								<%= link_to job.link_text, job.redirect_link, class: css %>
+							<% end %>
+							<div id="job_<%=job.id%>_delete_button">
+								<%= button_to delete_job_path, method: :delete, :class => "btn btn-delete btn-danger btn-xs", params: {id: job.id} do %>
+				                  Delete
+				                <% end %>
+				            </div>
+						<% end %>
+					</div>
+	            </div>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	  </div>
+	<% end %>
+
+	</section>
+	
+<% end %>
