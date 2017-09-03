@@ -4,7 +4,7 @@ class Product < ActiveRecord::Base
     counter = 0
     products = Product.all
     job = JobTracker.where(id: tracker_id).first
-
+    
     csv_string = CSV.generate do |csv|
       products.each do |product|
         csv << [product.title, product.price]

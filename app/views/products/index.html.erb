@@ -15,7 +15,7 @@ Index
 					<p><%=job.title%></p>
 					<p id="job_<%=job.id%>_status"><%=job.status%></p>
 					<br>
-					<%# if job.status == JobTracker::PROCESSING %>
+					<% if job.status == JobTracker::PROCESSING %>
 						<div class="col-md-12" id="job_<%= job.id %>_progress_bar">
 						  <br>
 						  <div class="export">
@@ -40,7 +40,7 @@ Index
 						        </div>
 						      </div>
 						    </div>
-						    <%# link_to 'View csv', '/export.csv', class: 'btn btn-success export-link', style: 'display:none' %>
+						    
 						  </div>
 						</div>  
 						<script>
@@ -49,8 +49,10 @@ Index
 						    progress_job({id: <%= job.id %>, status: "<%= job.status %>"});
 						  // });
 					  	</script>
-					<%#end %>
+					<% end %>
+					
 					<div id="job_<%=job.id%>_redirect_link" class="side-by-side-buttons">
+					<% byebug %>
 						<% if job.status != JobTracker::PROCESSING %>
 							<% if (job.status == JobTracker::FAILURE || job.status == JobTracker::ERROR) %>
 								<p style="color: red;"><%= job.last_error %></p>
@@ -59,7 +61,7 @@ Index
 								<% css = "btn btn-primary btn-xs" %>
 							<% end %>
 							<% if !job.redirect_link.blank? %>
-								<%= link_to job.link_text, job.redirect_link, class: css %>
+								<%= link_to 'View File', "/" + job.redirect_link.to_s, class: "btn btn-primary btn-xs view_file", style: "display:none" %>
 							<% end %>
 							<div id="job_<%=job.id%>_delete_button">
 								<%= button_to delete_job_path, method: :delete, :class => "btn btn-delete btn-danger btn-xs", params: {id: job.id} do %>

@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+	require 'sidekiq/web'
+	mount Sidekiq::Web => '/sidekiq'
+
   root "products#index"
 
   get 'products/export_csv' => 'products#export_csv', as: :export_csv_file

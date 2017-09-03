@@ -27,8 +27,10 @@ class ExportCsvWorker
 
       csv = Product.download_csv(@tracker.id)
 
+      file_name = "export_" + Time.zone.now.to_s + ".csv"
+
       File.open('public/export_' + Time.zone.now.to_s + '.csv' , 'w') { |f| f.write(csv) }
-      @tracker.update_attribute(:status, JobTracker::COMPLETE)
+      @tracker.update_attributes(status: JobTracker::COMPLETE, redirect_link: file_name)
     rescue Exception => ex
       logger.info ex.message
     end

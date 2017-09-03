@@ -42,6 +42,8 @@ function progress_job(job) {
               css = "btn btn-danger btn-xs"
             } else {
               css = "btn btn-primary btn-xs"
+              console.log("SHOW BUTTON");
+              $(".view_file").show();
             }
 
             // if (job.redirect_link != undefined) {
@@ -56,7 +58,7 @@ function progress_job(job) {
           // $('.progress').removeClass('active');
           // $('#job_'+job_id+'_bar').css('width', '100%').text('100%');
           // $('#job_'+job_id+'_status').text('Successfully exported!');
-          // $('.export-link').show();
+           // $('.export-link').show();
           clearInterval(interval);
         }
       })
